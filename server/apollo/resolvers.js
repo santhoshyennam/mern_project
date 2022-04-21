@@ -1,5 +1,5 @@
 const {fetch} =require("cross-fetch");
-const {UserModel,CategoryModel,SubcategoryModel,ProductModel,OrderModel,BannerModel} =require("../models/Schema")
+const {UserModel,CategoryModel,SubcategoryModel,ProductModel,OrderModel,HomeGridModel} =require("../models/Schema")
 const resolvers = {
     Query: {
 
@@ -15,8 +15,21 @@ const resolvers = {
         },
         getProducts: async (parent,args,context,info)=>
         {
-            const response = await ProductModel.find({categoryId:args.categoryId,subcategoryId:args.subcategoryId})
-            return response
+            if(args.subcategoryId)
+            {
+                
+                const response = await ProductModel.find({categoryId:args.categoryId,subcategoryId:args.subcategoryId})
+                console.log(response)
+                return response
+            }
+            else
+            {
+                const response = await ProductModel.find({categoryId:args.categoryId})
+                console.log(response)
+                return response
+            }
+           
+
         },
         getProduct: async (parent,args,context,info)=>
         {
@@ -39,12 +52,45 @@ const resolvers = {
            /// console.log(response[0])
             return response
         },
-        getBanners: async (parent,args,context,info)=>
+        getAllProducts: async ()=>{
+            const response = await ProductModel.find()
+            return response
+        },
+        getGrid: async (parent,args,context,info)=>{
+            const response = await HomeGridModel.findOne({rowId:args.row})
+           // console.log(response)
+            return response
+        },
+        getProductById: async (parent,args,context,info)=>
         {
-            const response = await BannerModel.find()
-            /// console.log(response[0])
-             return response
+            
+                const response = await ProductModel.findOne({productId:args.productId})
+                console.log(response)
+                return response    
+
+        },
+        getCart: async(parent,args,context,info)=>
+        {
+            var list = []
+            var l=0
+            console.log(args.products)
+            while(l<args.products.length)
+            {
+                const quantityId = args.products[l].quantityId
+                const response = await ProductModel.findOne({productId:args.products[l].productId})
+                list.push({categoryId:response.categoryId,subcategoryId:response.subcategoryId,productId:response.productId,
+                productName:response.productName,productImage:response.productImage,productDescription:response.productDescription,
+                cost:response.quantities[quantityId].cost,discount:response.quantities[quantityId].discount,quantity:response.quantities[quantityId].quantity,
+                quantityId:quantityId,count:args.products[l].count
+            })
+                console.log(list[l])
+                l++
+            }
+
+            return list
+
         }
+
     },
     Category :
     {

@@ -33,6 +33,8 @@ type Product
     productDescription:String
     productImage:String
     quantities:[Quantity]
+    categoryId:String
+    subcategoryId:String
 }
 type Quantity
 {
@@ -45,7 +47,7 @@ type Banner
 {
     categoryId:String
     subcategoryId:String
-    bannerImage:String
+    image:String
     products:[Product]
 }
 type Order
@@ -66,16 +68,52 @@ type OrderProduct
     discount:String
     quantity:String
 }
+type HomeProduct
+{
+    categoryId:String,
+    subcategoryId:String
+    image:String
+}
+type HomeGrid
+{
+    rowId:String
+    title:String
+    items:[HomeProduct]
+}
 
 type Query {
   getCategories : [Category]
   getSubcategories(categoryId:String):[Subcategory]
   getProducts(categoryId:String,subcategoryId:String):[Product]
+  getAllProducts : [Product]
   getProduct(categoryId:String,subcategoryId:String,productId:String):Product
   getOrders(userId:String):[Order]
   getOrder(userId:String,orderId:String):Order
   myDetails(userId:String):User
-  getBanners:[Banner]
+  getGrid(row:String):HomeGrid
+  getProductById(productId:String):Product
+  getCart(products:[CartType]):[CartProduct]
+ 
+}
+type CartProduct
+{
+    productId:String
+    productName:String
+    productDescription:String
+    productImage:String
+    cost:String
+    discount:String
+    quantity:String
+    quantityId:Int
+    categoryId:String
+    subcategoryId:String
+    count:Int
+}
+input CartType
+{
+    productId:String,
+    quantityId:Int,
+    count:Int
 }
 input OrderType
 {
@@ -106,3 +144,13 @@ type Mutation
 
 
   module.exports = typeDefs
+
+
+  /*
+
+
+   getMostPopular()
+  getBestSeller()
+  getDealofWeek()
+  getBigDiscount
+  */

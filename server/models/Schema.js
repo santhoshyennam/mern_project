@@ -62,12 +62,20 @@ const OrderSchema = new mongoose.Schema(
     products:[OrderProductSchema]
 });
 
-const BannerSchema = new mongoose.Schema(
+const HomeProductSchema = new mongoose.Schema(
     {
         categoryId:String,
         subcategoryId:String,
-        bannerImage:String 
+        image:String 
 
+    }
+)
+
+const HomeGridSchema = new mongoose.Schema(
+    {
+        rowId:String,
+        title:String,
+        items:[HomeProductSchema]
     }
 )
 
@@ -76,6 +84,5 @@ const UserModel = mongoose.model("Users", UserSchema,"Users");
 const SubcategoryModel = mongoose.model("Subcategory", SubcategorySchema,"Subcategory");
 const ProductModel = mongoose.model("Products", ProductSchema,"Products");
 const OrderModel = mongoose.model("Orders", OrderSchema,"Orders");
-const BannerModel = mongoose.model("Banners", OrderSchema,"Banners");
-
-module.exports = {UserModel,CategoryModel,SubcategoryModel,ProductModel,OrderModel,BannerModel};
+const HomeGridModel = mongoose.model("Homepage", HomeGridSchema,"Homepage");
+module.exports = {UserModel,CategoryModel,SubcategoryModel,ProductModel,OrderModel,HomeGridModel};

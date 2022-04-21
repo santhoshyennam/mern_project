@@ -18,14 +18,10 @@ const server = new ApolloServer({
   server.applyMiddleware({app});
   
 
-mongoose.connect("mongodb+srv://santhosh:santhosh31@cluster0.hvitz.mongodb.net/testApp")
+mongoose.connect("mongodb+srv://username:pass@cluster0.hvitz.mongodb.net/app",{ useNewUrlParser: true,useUnifiedTopology: true })
         .then(res=>{
-            app.listen(8000,()=>{
-                console.log("listening..")
-            })
+          
         })
         .catch(err=>{
             console.log(err)
         })
-
-
